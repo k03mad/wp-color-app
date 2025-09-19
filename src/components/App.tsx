@@ -209,20 +209,13 @@ const App: React.FC<AppProps> = () => {
             onPress={generateWallpaper}
           >
             <Text style={styles.generateButtonText}>
-              Сохранить обои
+              Сохранить цвет как обои
             </Text>
           </TouchableOpacity>
 
           <View style={[styles.separator, { backgroundColor: theme.border }]} />
 
-          <Text style={[styles.presetsTitle, { color: theme.text }]}>
-            Готовые цвета
-          </Text>
-
           <View style={styles.presetSection}>
-            <Text style={[styles.presetSectionTitle, { color: theme.text }]}>
-              Цветовая палитра
-            </Text>
             <View style={styles.presetColorsGrid}>
               {PRESET_COLORS.map((color, index) => (
                 <TouchableOpacity
@@ -239,9 +232,6 @@ const App: React.FC<AppProps> = () => {
           </View>
 
           <View style={styles.presetSection}>
-            <Text style={[styles.presetSectionTitle, { color: theme.text }]}>
-              Чёрные и серые
-            </Text>
             <View style={styles.presetColorsGrid}>
               {PRESET_BLACK_COLORS.map((color, index) => (
                 <TouchableOpacity
@@ -258,9 +248,6 @@ const App: React.FC<AppProps> = () => {
           </View>
 
           <View style={styles.presetSection}>
-            <Text style={[styles.presetSectionTitle, { color: theme.text }]}>
-              Тёмные с оттенками
-            </Text>
             <View style={styles.presetColorsGrid}>
               {PRESET_DARK_TINTED_COLORS.map((color, index) => (
                 <TouchableOpacity

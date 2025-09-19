@@ -29,7 +29,7 @@ const ColorPickerButton: React.FC<ColorPickerButtonProps> = ({
       onPress={onPress}
     >
       <Text style={styles.colorPickerButtonText}>
-        {showColorPicker ? 'Скрыть палитру' : 'Открыть палитру цветов'}
+        {showColorPicker ? 'Скрыть' : 'Палитра'}
       </Text>
     </TouchableOpacity>
   );
