@@ -10,6 +10,8 @@ import {
   PermissionsAndroid,
   Platform,
 } from 'react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
+import ColorPickerButton from './ui/ColorPickerButton';
 import {
   SafeAreaProvider,
   SafeAreaView,
@@ -44,6 +46,10 @@ const App: React.FC<AppProps> = () => {
   };
 
   const colorInfo = getColorInfo(selectedColor);
+
+  const copyToClipboard = (text: string) => {
+    Clipboard.setString(text);
+  };
 
   useEffect(() => {
     requestStoragePermission();
@@ -96,8 +102,8 @@ const App: React.FC<AppProps> = () => {
         const uri = await viewShotRef.current.capture();
         const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
         const fileName = `wallpaper_${timestamp}.png`;
-        const destPath = `${RNFS.ExternalStorageDirectoryPath}/DCIM/Pictures/${fileName}`;
-        const dirPath = `${RNFS.ExternalStorageDirectoryPath}/DCIM/Pictures`;
+        const destPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures/${fileName}`;
+        const dirPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures`;
         const dirExists = await RNFS.exists(dirPath);
         if (!dirExists) {
           await RNFS.mkdir(dirPath);
@@ -159,37 +165,39 @@ const App: React.FC<AppProps> = () => {
               Выбранный цвет
             </Text>
             <View style={styles.colorInfoContainer}>
-              <Text style={[styles.colorInfoText, { color: theme.text }]}>
-                HEX: {selectedColor.toUpperCase()}
-              </Text>
+              <TouchableOpacity onPress={() => copyToClipboard(selectedColor.toUpperCase())}>
+                <Text style={[styles.colorInfoText, { color: theme.text }]}>
+                  HEX: {selectedColor.toUpperCase()}
+                </Text>
+              </TouchableOpacity>
               {colorInfo && (
                 <>
-                  <Text style={[styles.colorInfoText, { color: theme.text }]}>
-                    RGB: {colorInfo.rgb.r}, {colorInfo.rgb.g}, {colorInfo.rgb.b}
-                  </Text>
-                  <Text style={[styles.colorInfoText, { color: theme.text }]}>
-                    HSL: {colorInfo.hsl.h}°, {colorInfo.hsl.s}%, {colorInfo.hsl.l}%
-                  </Text>
-                  <Text style={[styles.colorInfoText, { color: theme.text }]}>
-                    CMYK: {colorInfo.cmyk.c}%, {colorInfo.cmyk.m}%, {colorInfo.cmyk.y}%, {colorInfo.cmyk.k}%
-                  </Text>
+                  <TouchableOpacity onPress={() => copyToClipboard(`${colorInfo.rgb.r}, ${colorInfo.rgb.g}, ${colorInfo.rgb.b}`)}>
+                    <Text style={[styles.colorInfoText, { color: theme.text }]}>
+                      RGB: {colorInfo.rgb.r}, {colorInfo.rgb.g}, {colorInfo.rgb.b}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => copyToClipboard(`${colorInfo.hsl.h}°, ${colorInfo.hsl.s}%, ${colorInfo.hsl.l}%`)}>
+                    <Text style={[styles.colorInfoText, { color: theme.text }]}>
+                      HSL: {colorInfo.hsl.h}°, {colorInfo.hsl.s}%, {colorInfo.hsl.l}%
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => copyToClipboard(`${colorInfo.cmyk.c}%, ${colorInfo.cmyk.m}%, ${colorInfo.cmyk.y}%, ${colorInfo.cmyk.k}%`)}>
+                    <Text style={[styles.colorInfoText, { color: theme.text }]}>
+                      CMYK: {colorInfo.cmyk.c}%, {colorInfo.cmyk.m}%, {colorInfo.cmyk.y}%, {colorInfo.cmyk.k}%
+                    </Text>
+                  </TouchableOpacity>
                 </>
               )}
             </View>
           </View>
 
           <View style={styles.section}>
-            <TouchableOpacity
-              style={[
-                styles.colorPickerButton,
-                { backgroundColor: theme.cardBackground, borderColor: theme.border }
-              ]}
+            <ColorPickerButton
+              showColorPicker={showColorPicker}
               onPress={() => setShowColorPicker(!showColorPicker)}
-            >
-              <Text style={[styles.buttonText, { color: theme.text }]}>
-                {showColorPicker ? 'Скрыть палитру' : 'Открыть палитру цветов'}
-              </Text>
-            </TouchableOpacity>
+              theme={theme}
+            />
 
             {showColorPicker && (
               <View style={[styles.colorPickerContainer, { backgroundColor: theme.cardBackground }]} />

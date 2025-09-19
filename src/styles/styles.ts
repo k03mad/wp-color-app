@@ -51,17 +51,16 @@ export const styles = StyleSheet.create({
   colorInfoText: {
     fontSize: 14,
     marginBottom: 4,
-    fontFamily: 'System',
-  },
-  colorPickerButton: {
-    padding: 12,
-    borderRadius: 8,
-    borderWidth: 1,
-    alignItems: 'center',
+    fontFamily: 'monospace',
   },
   buttonText: {
     fontSize: 16,
     fontWeight: '500',
+  },
+  colorPickerButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white',
   },
   colorPickerContainer: {
     marginTop: 12,
@@ -112,5 +111,11 @@ export const styles = StyleSheet.create({
   },
   selectedPresetColor: {
     borderWidth: 3,
+  },
+  colorPickerButton: {
+    padding: 12,
+    borderRadius: 8,
+    borderWidth: 1,
+    alignItems: 'center',
   },
 });
