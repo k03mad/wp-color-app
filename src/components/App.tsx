@@ -24,7 +24,7 @@ import {
   PRESET_BLACK_COLORS,
   PRESET_DARK_TINTED_COLORS
 } from '../constants/colors';
-import { getColorInfo } from '../utils/colorUtils';
+import { getColorInfo } from '../utils/color';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
