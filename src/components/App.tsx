@@ -1,18 +1,14 @@
 import Clipboard from '@react-native-clipboard/clipboard';
 import type React from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
-  Alert,
   Dimensions,
-  PermissionsAndroid,
-  Platform,
   ScrollView,
   StatusBar,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import RNFS from 'react-native-fs';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import ViewShot from 'react-native-view-shot';
 import {
@@ -20,8 +16,11 @@ import {
   PRESET_COLORS,
   PRESET_DARK_TINTED_COLORS,
 } from '../constants/colors';
+import { theme } from '../constants/theme';
 import { styles } from '../styles/styles';
-import { getColorInfo } from '../utils/color';
+import { getColorInfo, getContrastColor } from '../utils/color';
+import { requestStoragePermission } from '../utils/permissions';
+import { generateWallpaper } from '../utils/wallpaper';
 import ColorPickerButton from './ui/ColorPickerButton';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
@@ -32,97 +31,22 @@ const App: React.FC = () => {
   const [showColorPicker, setShowColorPicker] = useState(false);
   const viewShotRef = useRef<ViewShot>(null);
 
-  const theme = {
-    background: '#1C1C1E',
-    surface: '#2C2C2E',
-    text: '#FFFFFF',
-    textSecondary: '#B0B0B0',
-    border: '#3A3A3C',
-    cardBackground: '#3A3A3C',
-  };
-
   const colorInfo = getColorInfo(selectedColor);
 
   const copyToClipboard = (text: string) => {
     Clipboard.setString(text);
   };
 
-  const requestStoragePermission = useCallback(async (): Promise<boolean> => {
-    if (Platform.OS === 'android') {
-      try {
-        const androidVersion = Platform.Version;
-        let permission:
-          | typeof PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES
-          | typeof PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
-
-        if (androidVersion >= 33) {
-          permission = PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES;
-        } else {
-          permission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
-        }
-
-        const granted = await PermissionsAndroid.request(permission, {
-          title: 'Разрешение на сохранение файлов',
-          message: 'Приложению нужно разрешение для сохранения обоев в галерею',
-          buttonNeutral: 'Спросить позже',
-          buttonNegative: 'Отмена',
-          buttonPositive: 'OK',
-        });
-
-        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-          Alert.alert(
-            'Разрешение отклонено',
-            'Для сохранения обоев необходимо разрешение на запись файлов',
-          );
-          return false;
-        }
-        return true;
-      } catch (err) {
-        console.warn(err);
-        return false;
-      }
-    }
-    return true;
-  }, []);
-
   useEffect(() => {
     requestStoragePermission();
-  }, [requestStoragePermission]);
+  }, []);
 
-  const generateWallpaper = async () => {
-    try {
-      if (viewShotRef.current?.capture) {
-        const hasPermission = await requestStoragePermission();
-        if (!hasPermission) {
-          return;
-        }
-
-        const uri = await viewShotRef.current.capture();
-        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-        const fileName = `wallpaper_${timestamp}.png`;
-        const destPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures/${fileName}`;
-        const dirPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures`;
-        const dirExists = await RNFS.exists(dirPath);
-        if (!dirExists) {
-          await RNFS.mkdir(dirPath);
-        }
-
-        await RNFS.copyFile(uri, destPath);
-
-        Alert.alert(
-          'Успешно!',
-          `Обои сохранены в галерею!\nПуть: ${destPath}`,
-          [{ text: 'OK' }],
-        );
-      }
-    } catch (error) {
-      console.error('Ошибка при сохранении:', error);
-      Alert.alert(
-        'Ошибка',
-        `Не удалось сохранить обои: ${
-          error instanceof Error ? error.message : 'Неизвестная ошибка'
-        }`,
-        [{ text: 'OK' }],
+  const handleGenerateWallpaper = async () => {
+    if (viewShotRef.current) {
+      await generateWallpaper(
+        viewShotRef as React.RefObject<ViewShot>,
+        requestStoragePermission,
+        selectedColor,
       );
     }
   };
@@ -239,9 +163,14 @@ const App: React.FC = () => {
 
           <TouchableOpacity
             style={[styles.generateButton, { backgroundColor: selectedColor }]}
-            onPress={generateWallpaper}
+            onPress={handleGenerateWallpaper}
           >
-            <Text style={styles.generateButtonText}>
+            <Text
+              style={[
+                styles.generateButtonText,
+                { color: getContrastColor(selectedColor) },
+              ]}
+            >
               Сохранить цвет как обои
             </Text>
           </TouchableOpacity>

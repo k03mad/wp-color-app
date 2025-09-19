@@ -1,15 +1,12 @@
 import type React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
+import type { Theme } from '../../constants/theme';
 import { styles } from '../../styles/styles';
 
 interface ColorPickerButtonProps {
   showColorPicker: boolean;
   onPress: () => void;
-  theme: {
-    cardBackground: string;
-    border: string;
-    text: string;
-  };
+  theme: Pick<Theme, 'cardBackground' | 'border' | 'text'>;
 }
 
 const ColorPickerButton: React.FC<ColorPickerButtonProps> = ({
