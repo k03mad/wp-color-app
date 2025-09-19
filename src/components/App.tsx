@@ -1,36 +1,32 @@
-import React, { useState, useRef, useEffect } from 'react';
+import Clipboard from '@react-native-clipboard/clipboard';
+import type React from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
-  View,
-  Text,
-  StatusBar,
-  TouchableOpacity,
   Alert,
   Dimensions,
-  ScrollView,
   PermissionsAndroid,
   Platform,
+  ScrollView,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import Clipboard from '@react-native-clipboard/clipboard';
-import ColorPickerButton from './ui/ColorPickerButton';
-import {
-  SafeAreaProvider,
-  SafeAreaView,
-} from 'react-native-safe-area-context';
-import ViewShot from 'react-native-view-shot';
 import RNFS from 'react-native-fs';
-import { styles } from '../styles/styles';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import ViewShot from 'react-native-view-shot';
 import {
-  PRESET_COLORS,
   PRESET_BLACK_COLORS,
-  PRESET_DARK_TINTED_COLORS
+  PRESET_COLORS,
+  PRESET_DARK_TINTED_COLORS,
 } from '../constants/colors';
+import { styles } from '../styles/styles';
 import { getColorInfo } from '../utils/color';
+import ColorPickerButton from './ui/ColorPickerButton';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
-interface AppProps {}
-
-const App: React.FC<AppProps> = () => {
+const App: React.FC = () => {
   const isDarkMode = true;
   const [selectedColor, setSelectedColor] = useState(PRESET_COLORS[0]);
   const [showColorPicker, setShowColorPicker] = useState(false);
@@ -51,15 +47,13 @@ const App: React.FC<AppProps> = () => {
     Clipboard.setString(text);
   };
 
-  useEffect(() => {
-    requestStoragePermission();
-  }, []);
-
-  const requestStoragePermission = async () => {
+  const requestStoragePermission = useCallback(async (): Promise<boolean> => {
     if (Platform.OS === 'android') {
       try {
         const androidVersion = Platform.Version;
-        let permission;
+        let permission:
+          | typeof PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES
+          | typeof PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
 
         if (androidVersion >= 33) {
           permission = PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES;
@@ -78,7 +72,7 @@ const App: React.FC<AppProps> = () => {
         if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
           Alert.alert(
             'Разрешение отклонено',
-            'Для сохранения обоев необходимо разрешение на запись файлов'
+            'Для сохранения обоев необходимо разрешение на запись файлов',
           );
           return false;
         }
@@ -89,11 +83,15 @@ const App: React.FC<AppProps> = () => {
       }
     }
     return true;
-  };
+  }, []);
+
+  useEffect(() => {
+    requestStoragePermission();
+  }, [requestStoragePermission]);
 
   const generateWallpaper = async () => {
     try {
-      if (viewShotRef.current && viewShotRef.current.capture) {
+      if (viewShotRef.current?.capture) {
         const hasPermission = await requestStoragePermission();
         if (!hasPermission) {
           return;
@@ -114,15 +112,17 @@ const App: React.FC<AppProps> = () => {
         Alert.alert(
           'Успешно!',
           `Обои сохранены в галерею!\nПуть: ${destPath}`,
-          [{ text: 'OK' }]
+          [{ text: 'OK' }],
         );
       }
     } catch (error) {
       console.error('Ошибка при сохранении:', error);
       Alert.alert(
         'Ошибка',
-        `Не удалось сохранить обои: ${error instanceof Error ? error.message : 'Неизвестная ошибка'}`,
-        [{ text: 'OK' }]
+        `Не удалось сохранить обои: ${
+          error instanceof Error ? error.message : 'Неизвестная ошибка'
+        }`,
+        [{ text: 'OK' }],
       );
     }
   };
@@ -138,7 +138,9 @@ const App: React.FC<AppProps> = () => {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={theme.background}
       />
-      <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <View style={styles.previewContainer}>
           <ViewShot
             ref={viewShotRef}
@@ -153,38 +155,64 @@ const App: React.FC<AppProps> = () => {
             <View
               style={[
                 styles.wallpaperPreview,
-                { backgroundColor: selectedColor }
+                { backgroundColor: selectedColor },
               ]}
             />
           </ViewShot>
         </View>
 
-        <ScrollView style={styles.controlPanel} showsVerticalScrollIndicator={false}>
+        <ScrollView
+          style={styles.controlPanel}
+          showsVerticalScrollIndicator={false}
+        >
           <View style={styles.section}>
             <Text style={[styles.sectionTitle, { color: theme.text }]}>
               Выбранный цвет
             </Text>
             <View style={styles.colorInfoContainer}>
-              <TouchableOpacity onPress={() => copyToClipboard(selectedColor.toUpperCase())}>
+              <TouchableOpacity
+                onPress={() => copyToClipboard(selectedColor.toUpperCase())}
+              >
                 <Text style={[styles.colorInfoText, { color: theme.text }]}>
                   HEX: {selectedColor.toUpperCase()}
                 </Text>
               </TouchableOpacity>
               {colorInfo && (
                 <>
-                  <TouchableOpacity onPress={() => copyToClipboard(`${colorInfo.rgb.r}, ${colorInfo.rgb.g}, ${colorInfo.rgb.b}`)}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      copyToClipboard(
+                        `${colorInfo.rgb.r}, ${colorInfo.rgb.g}, ${colorInfo.rgb.b}`,
+                      )
+                    }
+                  >
                     <Text style={[styles.colorInfoText, { color: theme.text }]}>
-                      RGB: {colorInfo.rgb.r}, {colorInfo.rgb.g}, {colorInfo.rgb.b}
+                      RGB: {colorInfo.rgb.r}, {colorInfo.rgb.g},{' '}
+                      {colorInfo.rgb.b}
                     </Text>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={() => copyToClipboard(`${colorInfo.hsl.h}°, ${colorInfo.hsl.s}%, ${colorInfo.hsl.l}%`)}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      copyToClipboard(
+                        `${colorInfo.hsl.h}°, ${colorInfo.hsl.s}%, ${colorInfo.hsl.l}%`,
+                      )
+                    }
+                  >
                     <Text style={[styles.colorInfoText, { color: theme.text }]}>
-                      HSL: {colorInfo.hsl.h}°, {colorInfo.hsl.s}%, {colorInfo.hsl.l}%
+                      HSL: {colorInfo.hsl.h}°, {colorInfo.hsl.s}%,{' '}
+                      {colorInfo.hsl.l}%
                     </Text>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={() => copyToClipboard(`${colorInfo.cmyk.c}%, ${colorInfo.cmyk.m}%, ${colorInfo.cmyk.y}%, ${colorInfo.cmyk.k}%`)}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      copyToClipboard(
+                        `${colorInfo.cmyk.c}%, ${colorInfo.cmyk.m}%, ${colorInfo.cmyk.y}%, ${colorInfo.cmyk.k}%`,
+                      )
+                    }
+                  >
                     <Text style={[styles.colorInfoText, { color: theme.text }]}>
-                      CMYK: {colorInfo.cmyk.c}%, {colorInfo.cmyk.m}%, {colorInfo.cmyk.y}%, {colorInfo.cmyk.k}%
+                      CMYK: {colorInfo.cmyk.c}%, {colorInfo.cmyk.m}%,{' '}
+                      {colorInfo.cmyk.y}%, {colorInfo.cmyk.k}%
                     </Text>
                   </TouchableOpacity>
                 </>
@@ -200,7 +228,12 @@ const App: React.FC<AppProps> = () => {
             />
 
             {showColorPicker && (
-              <View style={[styles.colorPickerContainer, { backgroundColor: theme.cardBackground }]} />
+              <View
+                style={[
+                  styles.colorPickerContainer,
+                  { backgroundColor: theme.cardBackground },
+                ]}
+              />
             )}
           </View>
 
@@ -217,13 +250,16 @@ const App: React.FC<AppProps> = () => {
 
           <View style={styles.presetSection}>
             <View style={styles.presetColorsGrid}>
-              {PRESET_COLORS.map((color, index) => (
+              {PRESET_COLORS.map((color, _index) => (
                 <TouchableOpacity
-                  key={`color-${index}`}
+                  key={`color-${color}`}
                   style={[
                     styles.presetColorBox,
-                    { backgroundColor: color, borderColor: theme.border },
-                    selectedColor === color && styles.selectedPresetColor
+                    {
+                      backgroundColor: color,
+                      borderColor: theme.border,
+                    },
+                    selectedColor === color && styles.selectedPresetColor,
                   ]}
                   onPress={() => selectPresetColor(color)}
                 />
@@ -233,13 +269,16 @@ const App: React.FC<AppProps> = () => {
 
           <View style={styles.presetSection}>
             <View style={styles.presetColorsGrid}>
-              {PRESET_BLACK_COLORS.map((color, index) => (
+              {PRESET_BLACK_COLORS.map((color, _index) => (
                 <TouchableOpacity
-                  key={`black-${index}`}
+                  key={`black-${color}`}
                   style={[
                     styles.presetColorBox,
-                    { backgroundColor: color, borderColor: theme.border },
-                    selectedColor === color && styles.selectedPresetColor
+                    {
+                      backgroundColor: color,
+                      borderColor: theme.border,
+                    },
+                    selectedColor === color && styles.selectedPresetColor,
                   ]}
                   onPress={() => selectPresetColor(color)}
                 />
@@ -249,13 +288,16 @@ const App: React.FC<AppProps> = () => {
 
           <View style={styles.presetSection}>
             <View style={styles.presetColorsGrid}>
-              {PRESET_DARK_TINTED_COLORS.map((color, index) => (
+              {PRESET_DARK_TINTED_COLORS.map((color, _index) => (
                 <TouchableOpacity
-                  key={`dark-tinted-${index}`}
+                  key={`dark-tinted-${color}`}
                   style={[
                     styles.presetColorBox,
-                    { backgroundColor: color, borderColor: theme.border },
-                    selectedColor === color && styles.selectedPresetColor
+                    {
+                      backgroundColor: color,
+                      borderColor: theme.border,
+                    },
+                    selectedColor === color && styles.selectedPresetColor,
                   ]}
                   onPress={() => selectPresetColor(color)}
                 />

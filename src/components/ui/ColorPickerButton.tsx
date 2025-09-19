@@ -1,5 +1,5 @@
-import React from 'react';
-import { TouchableOpacity, Text } from 'react-native';
+import type React from 'react';
+import { Text, TouchableOpacity } from 'react-native';
 import { styles } from '../../styles/styles';
 
 interface ColorPickerButtonProps {
@@ -23,8 +23,8 @@ const ColorPickerButton: React.FC<ColorPickerButtonProps> = ({
         styles.colorPickerButton,
         {
           backgroundColor: theme.cardBackground,
-          borderColor: theme.border
-        }
+          borderColor: theme.border,
+        },
       ]}
       onPress={onPress}
     >
