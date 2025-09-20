@@ -1,7 +1,7 @@
 import Clipboard from '@react-native-clipboard/clipboard';
 import type React from 'react';
 import { useEffect, useRef, useState } from 'react';
-import { ScrollView, StatusBar, View } from 'react-native';
+import { Dimensions, ScrollView, StatusBar, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import type ViewShot from 'react-native-view-shot';
 import { PRESET_BLACK_COLORS, PRESET_COLORS } from '../constants/colors';
@@ -15,7 +15,7 @@ import { styles } from '../styles/styles';
 import { getColorInfo } from '../utils/color';
 import { requestStoragePermission } from '../utils/permissions';
 import { generateWallpaper } from '../utils/wallpaper';
-import ColorInfo from './ui/ColorInfo';
+import ColorDetails from './ui/ColorDetails';
 import ColorPicker from './ui/ColorPicker';
 import ColorPreview from './ui/ColorPreview';
 import GenerateButton from './ui/GenerateButton';
@@ -60,6 +60,11 @@ const App: React.FC = () => {
         `${colorInfo.cmyk.c}%, ${colorInfo.cmyk.m}%, ${colorInfo.cmyk.y}%, ${colorInfo.cmyk.k}%`,
       );
     }
+  };
+
+  const handleCopyResolution = () => {
+    const { width, height } = Dimensions.get('window');
+    copyToClipboard(`${Math.round(width)} × ${Math.round(height)}`);
   };
 
   useEffect(() => {
@@ -129,11 +134,12 @@ const App: React.FC = () => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollContent}
         >
-          <ColorInfo
+          <ColorDetails
             colorInfo={colorInfo}
             onCopyRgb={handleCopyRgb}
             onCopyHsl={handleCopyHsl}
             onCopyCmyk={handleCopyCmyk}
+            onCopyResolution={handleCopyResolution}
             isGradientMode={isGradientMode}
           />
 

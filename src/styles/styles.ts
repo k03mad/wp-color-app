@@ -79,10 +79,22 @@ export const styles = StyleSheet.create({
   colorInfoContainer: {
     marginTop: 8,
   },
+  colorInfoHeader: {
+    marginBottom: 8,
+    paddingBottom: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
+  },
   colorInfoText: {
     fontSize: 14,
     marginBottom: 4,
     fontFamily: 'monospace',
+  },
+  resolutionInfo: {
+    marginTop: 8,
+    paddingTop: 8,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255, 255, 255, 0.1)',
   },
   generateButton: {
     borderRadius: 12,

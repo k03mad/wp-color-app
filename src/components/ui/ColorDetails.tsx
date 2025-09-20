@@ -14,6 +14,7 @@ interface ColorDetailsProps {
   onCopyRgb: () => void;
   onCopyHsl: () => void;
   onCopyCmyk: () => void;
+  onCopyResolution: () => void;
   isGradientMode?: boolean;
 }
 
@@ -22,6 +23,7 @@ const ColorDetails: React.FC<ColorDetailsProps> = ({
   onCopyRgb,
   onCopyHsl,
   onCopyCmyk,
+  onCopyResolution,
   isGradientMode = false,
 }) => {
   if (!colorInfo) return null;
@@ -29,6 +31,7 @@ const ColorDetails: React.FC<ColorDetailsProps> = ({
   return (
     <View style={styles.section}>
       <View style={styles.colorInfoContainer}>
+        <View style={styles.colorInfoHeader} />
         <TouchableOpacity onPress={onCopyRgb} disabled={isGradientMode}>
           <Text style={[styles.colorInfoText, { color: theme.text }]}>
             RGB:{' '}
@@ -53,12 +56,14 @@ const ColorDetails: React.FC<ColorDetailsProps> = ({
               : `${colorInfo.cmyk.c}%, ${colorInfo.cmyk.m}%, ${colorInfo.cmyk.y}%, ${colorInfo.cmyk.k}%`}
           </Text>
         </TouchableOpacity>
-        <View style={styles.resolutionInfo}>
-          <Text style={[styles.colorInfoText, { color: theme.text }]}>
-            📐 Разрешение: {Math.round(screenWidth)} ×{' '}
-            {Math.round(screenHeight)}
-          </Text>
-        </View>
+        <TouchableOpacity onPress={onCopyResolution}>
+          <View style={styles.resolutionInfo}>
+            <Text style={[styles.colorInfoText, { color: theme.text }]}>
+              PX: {Math.round(screenWidth)} × {Math.round(screenHeight)}
+            </Text>
+          </View>
+        </TouchableOpacity>
+        <View style={styles.colorInfoHeader} />
       </View>
     </View>
   );
