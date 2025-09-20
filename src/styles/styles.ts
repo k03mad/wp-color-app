@@ -78,12 +78,6 @@ export const styles = StyleSheet.create({
   section: {
     marginBottom: 24,
   },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 12,
-    fontFamily: 'System',
-  },
   colorInfoContainer: {
     marginTop: 8,
   },
@@ -101,9 +95,7 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   generateButton: {
-    padding: 16,
     borderRadius: 8,
-    alignItems: 'center',
     marginTop: 6,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 6 },
@@ -155,12 +147,30 @@ export const styles = StyleSheet.create({
     elevation: 4,
   },
   selectedPresetColor: {
-    borderWidth: 3,
+    transform: [{ scale: 1.1 }],
+  },
+  selectedGradientContainer: {
+    transform: [{ scale: 1.1 }],
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  gradientBox: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
+  gradientButton: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
   },
   colorPickerButton: {
-    padding: 16,
     borderRadius: 8,
-    alignItems: 'center',
     marginBottom: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },

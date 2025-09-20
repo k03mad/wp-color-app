@@ -1,30 +1,63 @@
 import type React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import { styles } from '../../styles/styles';
 import { getContrastColor } from '../../utils/color';
 
 interface GenerateButtonProps {
   selectedColor: string;
   onPress: () => void;
+  selectedGradient?: {
+    colors: string[];
+    start: { x: number; y: number };
+    end: { x: number; y: number };
+  } | null;
+  isGradientMode?: boolean;
 }
 
 const GenerateButton: React.FC<GenerateButtonProps> = ({
   selectedColor,
   onPress,
+  selectedGradient,
+  isGradientMode = false,
 }) => {
   return (
     <TouchableOpacity
-      style={[styles.generateButton, { backgroundColor: selectedColor }]}
+      style={[
+        styles.generateButton,
+        {
+          overflow: 'hidden',
+        },
+      ]}
       onPress={onPress}
     >
-      <Text
-        style={[
-          styles.generateButtonText,
-          { color: getContrastColor(selectedColor) },
-        ]}
+      <LinearGradient
+        colors={
+          isGradientMode && selectedGradient
+            ? selectedGradient.colors
+            : [selectedColor, `${selectedColor}CC`]
+        }
+        start={
+          isGradientMode && selectedGradient
+            ? selectedGradient.start
+            : { x: 0, y: 0 }
+        }
+        end={
+          isGradientMode && selectedGradient
+            ? selectedGradient.end
+            : { x: 1, y: 1 }
+        }
+        style={styles.gradientButton}
       >
-        Сохранить цвет как обои
-      </Text>
+        <Text
+          style={[
+            styles.generateButtonText,
+            { color: getContrastColor(selectedColor) },
+          ]}
+        >
+          Сохранить цвет как обои
+        </Text>
+      </LinearGradient>
     </TouchableOpacity>
   );
 };

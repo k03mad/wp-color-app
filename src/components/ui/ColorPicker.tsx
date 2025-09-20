@@ -1,5 +1,6 @@
 import type React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import ColorPicker from 'react-native-wheel-color-picker';
 import type { Theme } from '../../constants/theme';
 import { styles } from '../../styles/styles';
@@ -11,6 +12,12 @@ interface ColorPickerProps {
   showColorPicker: boolean;
   onTogglePicker: () => void;
   theme: Pick<Theme, 'cardBackground' | 'border' | 'text'>;
+  selectedGradient?: {
+    colors: string[];
+    start: { x: number; y: number };
+    end: { x: number; y: number };
+  } | null;
+  isGradientMode?: boolean;
 }
 
 const ColorPickerComponent: React.FC<ColorPickerProps> = ({
@@ -19,6 +26,8 @@ const ColorPickerComponent: React.FC<ColorPickerProps> = ({
   showColorPicker,
   onTogglePicker,
   theme,
+  selectedGradient,
+  isGradientMode = false,
 }) => {
   return (
     <View>
@@ -26,19 +35,38 @@ const ColorPickerComponent: React.FC<ColorPickerProps> = ({
         style={[
           styles.colorPickerButton,
           {
-            backgroundColor: selectedColor,
+            overflow: 'hidden',
           },
         ]}
         onPress={onTogglePicker}
       >
-        <Text
-          style={[
-            styles.colorPickerButtonText,
-            { color: getContrastColor(selectedColor) },
-          ]}
+        <LinearGradient
+          colors={
+            isGradientMode && selectedGradient
+              ? selectedGradient.colors
+              : [selectedColor, `${selectedColor}CC`]
+          }
+          start={
+            isGradientMode && selectedGradient
+              ? selectedGradient.start
+              : { x: 0, y: 0 }
+          }
+          end={
+            isGradientMode && selectedGradient
+              ? selectedGradient.end
+              : { x: 1, y: 1 }
+          }
+          style={styles.gradientButton}
         >
-          {showColorPicker ? 'Скрыть' : 'Палитра'}
-        </Text>
+          <Text
+            style={[
+              styles.colorPickerButtonText,
+              { color: getContrastColor(selectedColor) },
+            ]}
+          >
+            {showColorPicker ? 'Скрыть' : 'Палитра'}
+          </Text>
+        </LinearGradient>
       </TouchableOpacity>
 
       {showColorPicker && (
