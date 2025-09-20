@@ -17,5 +17,11 @@
   "[json]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
+  "[html]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
   "cSpell.words": ["gradlew", "RNFS"]
 }
