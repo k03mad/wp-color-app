@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "build": "./android/gradlew assembleRelease",
+    "build": "cd android && ./gradlew assembleRelease && cd .. && cp android/app/build/outputs/apk/release/app-release.apk .",
     "lint": "biome check",
     "prepare": "husky"
   },
