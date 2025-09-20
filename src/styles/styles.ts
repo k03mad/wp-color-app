@@ -49,28 +49,6 @@ export const styles = StyleSheet.create({
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 2,
   },
-  previewSubtext: {
-    fontSize: 12,
-    fontWeight: '500',
-    textAlign: 'center',
-    marginTop: 4,
-    opacity: 0.8,
-    textShadowColor: 'rgba(0,0,0,0.5)',
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 2,
-  },
-  previewLabel: {
-    position: 'absolute',
-    bottom: 8,
-    right: 8,
-    fontSize: 12,
-    fontWeight: '500',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    color: 'white',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 4,
-  },
   controlPanel: {
     flex: 1,
     paddingHorizontal: 16,
@@ -85,10 +63,6 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     marginBottom: 4,
     fontFamily: 'monospace',
-  },
-  buttonText: {
-    fontSize: 16,
-    fontWeight: '500',
   },
   colorPickerButtonText: {
     fontSize: 16,
@@ -110,23 +84,8 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
   },
-  separator: {
-    height: 1,
-    marginTop: 12,
-    marginBottom: 24,
-  },
-  presetsTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 16,
-  },
   presetSection: {
     marginBottom: 24,
-  },
-  presetSectionTitle: {
-    fontSize: 16,
-    fontWeight: '500',
-    marginBottom: 12,
   },
   presetColorsGrid: {
     flexDirection: 'row',
@@ -152,12 +111,6 @@ export const styles = StyleSheet.create({
   selectedGradientContainer: {
     transform: [{ scale: 1.1 }],
   },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 12,
-    textAlign: 'center',
-  },
   gradientBox: {
     flex: 1,
     width: '100%',
@@ -180,17 +133,9 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.15)',
   },
-  colorPickerWrapper: {
-    alignItems: 'center',
-  },
   colorPicker: {
     height: 300,
     width: '100%',
-  },
-  colorPickerTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 16,
   },
   colorPickerContainer: {
     position: 'relative',
@@ -198,51 +143,5 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     overflow: 'hidden',
     padding: 16,
-  },
-  colorPickerOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    borderRadius: 140,
-  },
-  valueSliderContainer: {
-    width: '100%',
-    paddingHorizontal: 20,
-  },
-  sliderLabel: {
-    fontSize: 14,
-    fontWeight: '500',
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  valueSlider: {
-    position: 'relative',
-    height: 20,
-    borderRadius: 10,
-    overflow: 'hidden',
-  },
-  valueSliderTrack: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    borderRadius: 10,
-  },
-  valueSliderThumb: {
-    position: 'absolute',
-    top: -6,
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    borderWidth: 3,
-    borderColor: 'white',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 4,
   },
 });

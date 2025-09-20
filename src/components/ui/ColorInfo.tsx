@@ -12,6 +12,7 @@ interface ColorInfoProps {
   onCopyRgb: () => void;
   onCopyHsl: () => void;
   onCopyCmyk: () => void;
+  isGradientMode?: boolean;
 }
 
 const ColorInfo: React.FC<ColorInfoProps> = ({
@@ -19,26 +20,35 @@ const ColorInfo: React.FC<ColorInfoProps> = ({
   onCopyRgb,
   onCopyHsl,
   onCopyCmyk,
+  isGradientMode = false,
 }) => {
   if (!colorInfo) return null;
 
   return (
     <View style={styles.section}>
       <View style={styles.colorInfoContainer}>
-        <TouchableOpacity onPress={onCopyRgb}>
+        <TouchableOpacity onPress={onCopyRgb} disabled={isGradientMode}>
           <Text style={[styles.colorInfoText, { color: theme.text }]}>
-            RGB: {colorInfo.rgb.r}, {colorInfo.rgb.g}, {colorInfo.rgb.b}
+            RGB:{' '}
+            {isGradientMode
+              ? '-'
+              : `${colorInfo.rgb.r}, ${colorInfo.rgb.g}, ${colorInfo.rgb.b}`}
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={onCopyHsl}>
+        <TouchableOpacity onPress={onCopyHsl} disabled={isGradientMode}>
           <Text style={[styles.colorInfoText, { color: theme.text }]}>
-            HSL: {colorInfo.hsl.h}°, {colorInfo.hsl.s}%, {colorInfo.hsl.l}%
+            HSL:{' '}
+            {isGradientMode
+              ? '-'
+              : `${colorInfo.hsl.h}°, ${colorInfo.hsl.s}%, ${colorInfo.hsl.l}%`}
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={onCopyCmyk}>
+        <TouchableOpacity onPress={onCopyCmyk} disabled={isGradientMode}>
           <Text style={[styles.colorInfoText, { color: theme.text }]}>
-            CMYK: {colorInfo.cmyk.c}%, {colorInfo.cmyk.m}%, {colorInfo.cmyk.y}%,{' '}
-            {colorInfo.cmyk.k}%
+            CMYK:{' '}
+            {isGradientMode
+              ? '-'
+              : `${colorInfo.cmyk.c}%, ${colorInfo.cmyk.m}%, ${colorInfo.cmyk.y}%, ${colorInfo.cmyk.k}%`}
           </Text>
         </TouchableOpacity>
       </View>

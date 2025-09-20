@@ -404,8 +404,3 @@ export const DARK_GRADIENT_PRESETS: GradientPreset[] = [
     name: 'Чёрно-многоцветный',
   },
 ];
-
-export const GRADIENT_PRESETS: GradientPreset[] = [
-  ...BRIGHT_GRADIENT_PRESETS,
-  ...DARK_GRADIENT_PRESETS,
-];

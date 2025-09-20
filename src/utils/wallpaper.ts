@@ -6,7 +6,6 @@ import type ViewShot from 'react-native-view-shot';
 export const generateWallpaper = async (
   viewShotRef: React.RefObject<ViewShot>,
   requestStoragePermission: () => Promise<boolean>,
-  _selectedColor: string,
 ) => {
   try {
     if (!viewShotRef.current?.capture) {

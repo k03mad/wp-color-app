@@ -71,7 +71,6 @@ const App: React.FC = () => {
       await generateWallpaper(
         viewShotRef as React.RefObject<ViewShot>,
         requestStoragePermission,
-        selectedColor,
       );
     }
   };
@@ -130,6 +129,7 @@ const App: React.FC = () => {
             onCopyRgb={handleCopyRgb}
             onCopyHsl={handleCopyHsl}
             onCopyCmyk={handleCopyCmyk}
+            isGradientMode={isGradientMode}
           />
 
           <View style={styles.section}>
