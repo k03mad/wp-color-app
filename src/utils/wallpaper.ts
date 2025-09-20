@@ -19,7 +19,7 @@ export const generateWallpaper = async (
     }
 
     const uri = await viewShotRef.current.capture();
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const timestamp = Date.now();
     const fileName = `wallpaper_${timestamp}.png`;
     const destPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures/${fileName}`;
     const dirPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures`;

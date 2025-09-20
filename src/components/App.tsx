@@ -11,17 +11,13 @@ import {
 } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import ViewShot from 'react-native-view-shot';
-import {
-  PRESET_BLACK_COLORS,
-  PRESET_COLORS,
-  PRESET_DARK_TINTED_COLORS,
-} from '../constants/colors';
+import { PRESET_BLACK_COLORS, PRESET_COLORS } from '../constants/colors';
 import { theme } from '../constants/theme';
 import { styles } from '../styles/styles';
 import { getColorInfo, getContrastColor } from '../utils/color';
 import { requestStoragePermission } from '../utils/permissions';
 import { generateWallpaper } from '../utils/wallpaper';
-import ColorPickerButton from './ui/ColorPickerButton';
+import ColorPicker from './ui/ColorPicker';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -65,7 +61,11 @@ const App: React.FC = () => {
       <SafeAreaView
         style={[styles.container, { backgroundColor: theme.background }]}
       >
-        <View style={styles.previewContainer}>
+        <TouchableOpacity
+          style={styles.previewContainer}
+          onPress={() => copyToClipboard(selectedColor.toUpperCase())}
+          activeOpacity={0.8}
+        >
           <ViewShot
             ref={viewShotRef}
             options={{
@@ -76,31 +76,46 @@ const App: React.FC = () => {
             }}
             style={styles.wallpaperPreview}
           >
-            <View
-              style={[
-                styles.wallpaperPreview,
-                { backgroundColor: selectedColor },
-              ]}
-            />
+            <View style={styles.wallpaperPreview}>
+              {/* Основной цвет */}
+              <View
+                style={[
+                  styles.wallpaperPreview,
+                  { backgroundColor: selectedColor },
+                ]}
+              />
+
+              {/* Градиентный оверлей для глубины */}
+              <View
+                style={[
+                  styles.gradientOverlay,
+                  {
+                    backgroundColor: `${selectedColor}20`,
+                  },
+                ]}
+              />
+
+              {/* Текстовый оверлей с информацией о цвете */}
+              <View style={styles.previewTextOverlay}>
+                <Text
+                  style={[
+                    styles.previewText,
+                    { color: getContrastColor(selectedColor) },
+                  ]}
+                >
+                  {selectedColor.toUpperCase()}
+                </Text>
+              </View>
+            </View>
           </ViewShot>
-        </View>
+        </TouchableOpacity>
 
         <ScrollView
           style={styles.controlPanel}
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.section}>
-            <Text style={[styles.sectionTitle, { color: theme.text }]}>
-              Выбранный цвет
-            </Text>
             <View style={styles.colorInfoContainer}>
-              <TouchableOpacity
-                onPress={() => copyToClipboard(selectedColor.toUpperCase())}
-              >
-                <Text style={[styles.colorInfoText, { color: theme.text }]}>
-                  HEX: {selectedColor.toUpperCase()}
-                </Text>
-              </TouchableOpacity>
               {colorInfo && (
                 <>
                   <TouchableOpacity
@@ -145,37 +160,31 @@ const App: React.FC = () => {
           </View>
 
           <View style={styles.section}>
-            <ColorPickerButton
+            <ColorPicker
+              selectedColor={selectedColor}
+              onColorChange={setSelectedColor}
               showColorPicker={showColorPicker}
-              onPress={() => setShowColorPicker(!showColorPicker)}
+              onTogglePicker={() => setShowColorPicker(!showColorPicker)}
               theme={theme}
             />
 
-            {showColorPicker && (
-              <View
-                style={[
-                  styles.colorPickerContainer,
-                  { backgroundColor: theme.cardBackground },
-                ]}
-              />
-            )}
-          </View>
-
-          <TouchableOpacity
-            style={[styles.generateButton, { backgroundColor: selectedColor }]}
-            onPress={handleGenerateWallpaper}
-          >
-            <Text
+            <TouchableOpacity
               style={[
-                styles.generateButtonText,
-                { color: getContrastColor(selectedColor) },
+                styles.generateButton,
+                { backgroundColor: selectedColor },
               ]}
+              onPress={handleGenerateWallpaper}
             >
-              Сохранить цвет как обои
-            </Text>
-          </TouchableOpacity>
-
-          <View style={[styles.separator, { backgroundColor: theme.border }]} />
+              <Text
+                style={[
+                  styles.generateButtonText,
+                  { color: getContrastColor(selectedColor) },
+                ]}
+              >
+                Сохранить цвет как обои
+              </Text>
+            </TouchableOpacity>
+          </View>
 
           <View style={styles.presetSection}>
             <View style={styles.presetColorsGrid}>
@@ -201,25 +210,6 @@ const App: React.FC = () => {
               {PRESET_BLACK_COLORS.map((color, _index) => (
                 <TouchableOpacity
                   key={`black-${color}`}
-                  style={[
-                    styles.presetColorBox,
-                    {
-                      backgroundColor: color,
-                      borderColor: theme.border,
-                    },
-                    selectedColor === color && styles.selectedPresetColor,
-                  ]}
-                  onPress={() => selectPresetColor(color)}
-                />
-              ))}
-            </View>
-          </View>
-
-          <View style={styles.presetSection}>
-            <View style={styles.presetColorsGrid}>
-              {PRESET_DARK_TINTED_COLORS.map((color, _index) => (
-                <TouchableOpacity
-                  key={`dark-tinted-${color}`}
                   style={[
                     styles.presetColorBox,
                     {
