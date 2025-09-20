@@ -63,7 +63,10 @@ const App: React.FC = () => {
   };
 
   const handleCopyResolution = () => {
-    const { width, height } = Dimensions.get('window');
+    const screenData = Dimensions.get('screen');
+    const pixelRatio = screenData.scale;
+    const width = screenData.width * pixelRatio;
+    const height = screenData.height * pixelRatio;
     copyToClipboard(`${Math.round(width)} × ${Math.round(height)}`);
   };
 

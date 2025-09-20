@@ -3,7 +3,10 @@ import { Dimensions, Text, TouchableOpacity, View } from 'react-native';
 import { theme } from '../../constants/theme';
 import { styles } from '../../styles/styles';
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+const screenData = Dimensions.get('screen');
+const pixelRatio = screenData.scale;
+const screenWidth = screenData.width * pixelRatio;
+const screenHeight = screenData.height * pixelRatio;
 
 interface ColorDetailsProps {
   colorInfo: {
@@ -58,8 +61,22 @@ const ColorDetails: React.FC<ColorDetailsProps> = ({
         </TouchableOpacity>
         <TouchableOpacity onPress={onCopyResolution}>
           <View style={styles.resolutionInfo}>
-            <Text style={[styles.colorInfoText, { color: theme.text }]}>
-              PX: {Math.round(screenWidth)} × {Math.round(screenHeight)}
+            <Text
+              style={[
+                styles.colorInfoText,
+                { color: theme.text, fontSize: 12, opacity: 0.7 },
+              ]}
+            >
+              Screen: {Math.round(screenData.width)} ×{' '}
+              {Math.round(screenData.height)} (scale: {pixelRatio})
+            </Text>
+            <Text
+              style={[
+                styles.colorInfoText,
+                { color: theme.text, fontSize: 12, opacity: 0.7 },
+              ]}
+            >
+              Physical: {Math.round(screenWidth)} × {Math.round(screenHeight)}
             </Text>
           </View>
         </TouchableOpacity>
