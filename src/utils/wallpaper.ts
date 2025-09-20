@@ -2,6 +2,7 @@ import type React from 'react';
 import RNFS from 'react-native-fs';
 import Toast from 'react-native-toast-message';
 import type ViewShot from 'react-native-view-shot';
+import { TOAST_VISIBILITY_TIME } from '../constants/theme';
 
 export const generateWallpaper = async (
   viewShotRef: React.RefObject<ViewShot>,
@@ -31,17 +32,15 @@ export const generateWallpaper = async (
 
     Toast.show({
       type: 'success',
-      text1: '🎉 Готово!',
-      text2: `Обои сохранены в галерею:\n📁 Pictures/WPColorApp/\n📄 ${fileName}`,
-      visibilityTime: 5000,
+      text1: `Обои сохранены в галерею:\n📁 Pictures/WPColorApp/\n📄 ${fileName}`,
+      visibilityTime: TOAST_VISIBILITY_TIME,
     });
   } catch (error) {
     console.error('Ошибка при сохранении:', error);
     Toast.show({
       type: 'error',
-      text1: '😔 Упс!',
-      text2: 'Не удалось сохранить обои. Попробуйте еще раз.',
-      visibilityTime: 4000,
+      text1: '😔 Упс! Не удалось сохранить обои. Попробуйте еще раз.',
+      visibilityTime: TOAST_VISIBILITY_TIME,
     });
   }
 };

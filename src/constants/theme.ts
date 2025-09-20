@@ -11,3 +11,5 @@ export const theme: Theme = {
   border: '#3A3A3C',
   cardBackground: '#3A3A3C',
 };
+
+export const TOAST_VISIBILITY_TIME = 3000;

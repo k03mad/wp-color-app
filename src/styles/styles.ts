@@ -150,10 +150,10 @@ export const styles = StyleSheet.create({
   },
   toastContainer: {
     backgroundColor: 'rgba(28, 28, 30, 0.95)',
-    height: 120,
-    margin: 16,
+    minHeight: 100,
+    margin: 11,
     borderRadius: 12,
-    padding: 16,
+    padding: 14,
     borderWidth: 1,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -161,15 +161,10 @@ export const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 4,
   },
-  toastTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
   toastText: {
     color: 'white',
     fontSize: 14,
-    lineHeight: 18,
+    lineHeight: 20,
     flex: 1,
   },
   toastSuccessBorder: {
@@ -180,14 +175,5 @@ export const styles = StyleSheet.create({
   },
   toastInfoBorder: {
     borderColor: 'rgba(33, 150, 243, 0.3)',
-  },
-  toastSuccessTitle: {
-    color: '#4CAF50',
-  },
-  toastErrorTitle: {
-    color: '#F44336',
-  },
-  toastInfoTitle: {
-    color: '#2196F3',
   },
 });
