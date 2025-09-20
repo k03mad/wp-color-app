@@ -21,8 +21,8 @@ export const generateWallpaper = async (
     const uri = await viewShotRef.current.capture();
     const timestamp = Date.now();
     const fileName = `wallpaper_${timestamp}.png`;
-    const destPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures/${fileName}`;
-    const dirPath = `${RNFS.ExternalStorageDirectoryPath}/Pictures`;
+    const dirPath = `${RNFS.PicturesDirectoryPath}/wp-color-app`;
+    const destPath = `${dirPath}/${fileName}`;
     const dirExists = await RNFS.exists(dirPath);
     if (!dirExists) {
       await RNFS.mkdir(dirPath);
@@ -32,7 +32,7 @@ export const generateWallpaper = async (
 
     Toast.show({
       type: 'success',
-      text1: `Обои сохранены в галерею:\n📁 Pictures/WPColorApp/\n📄 ${fileName}`,
+      text1: `Обои сохранены в галерею:\n📁 Pictures/wp-color-app/\n📄 ${fileName}`,
       visibilityTime: TOAST_VISIBILITY_TIME,
     });
   } catch (error) {

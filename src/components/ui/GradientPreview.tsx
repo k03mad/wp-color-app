@@ -1,11 +1,13 @@
 import type React from 'react';
-import { Dimensions, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, TouchableOpacity, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import ViewShot from 'react-native-view-shot';
 import { styles } from '../../styles/styles';
-import { getContrastColor } from '../../utils/color';
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+const screenData = Dimensions.get('screen');
+const pixelRatio = screenData.scale;
+const screenWidth = screenData.width * pixelRatio;
+const screenHeight = screenData.height * pixelRatio;
 
 interface GradientPreviewProps {
   gradient: {
@@ -46,26 +48,6 @@ const GradientPreview: React.FC<GradientPreviewProps> = ({
             end={gradient.end}
             style={styles.wallpaperPreview}
           />
-
-          <View
-            style={[
-              styles.gradientOverlay,
-              {
-                backgroundColor: 'rgba(0, 0, 0, 0.1)',
-              },
-            ]}
-          />
-
-          <View style={styles.previewTextOverlay}>
-            <Text
-              style={[
-                styles.previewText,
-                { color: getContrastColor(gradient.colors[0]) },
-              ]}
-            >
-              {gradient.name}
-            </Text>
-          </View>
         </View>
       </ViewShot>
     </TouchableOpacity>
