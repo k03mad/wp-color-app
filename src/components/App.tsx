@@ -123,6 +123,7 @@ const App: React.FC = () => {
         <ScrollView
           style={styles.controlPanel}
           showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContent}
         >
           <ColorInfo
             colorInfo={colorInfo}
@@ -139,13 +140,6 @@ const App: React.FC = () => {
               showColorPicker={showColorPicker}
               onTogglePicker={() => setShowColorPicker(!showColorPicker)}
               theme={theme}
-              selectedGradient={selectedGradient}
-              isGradientMode={isGradientMode}
-            />
-
-            <GenerateButton
-              selectedColor={selectedColor}
-              onPress={handleGenerateWallpaper}
               selectedGradient={selectedGradient}
               isGradientMode={isGradientMode}
             />
@@ -175,6 +169,16 @@ const App: React.FC = () => {
             onSelectGradient={selectGradient}
           />
         </ScrollView>
+
+        {/* Sticky кнопка сохранения */}
+        <View style={styles.stickyButtonContainer}>
+          <GenerateButton
+            selectedColor={selectedColor}
+            onPress={handleGenerateWallpaper}
+            selectedGradient={selectedGradient}
+            isGradientMode={isGradientMode}
+          />
+        </View>
       </SafeAreaView>
     </SafeAreaProvider>
   );
