@@ -22,6 +22,7 @@ import GenerateButton from './ui/GenerateButton';
 import GradientPresets from './ui/GradientPresets';
 import GradientPreview from './ui/GradientPreview';
 import PresetColors from './ui/PresetColors';
+import ToastConfig from './ui/ToastConfig';
 
 const App: React.FC = () => {
   const isDarkMode = true;
@@ -82,8 +83,14 @@ const App: React.FC = () => {
 
   const selectGradient = (gradient: GradientPreset) => {
     setSelectedGradient(gradient);
-    setSelectedColor(gradient.colors[0]);
+    // Не меняем selectedColor при выборе градиента
     setIsGradientMode(true);
+  };
+
+  const handleColorChange = (color: string) => {
+    setSelectedColor(color);
+    setSelectedGradient(null);
+    setIsGradientMode(false);
   };
 
   const handleCopyHex = () => {
@@ -132,7 +139,7 @@ const App: React.FC = () => {
 
           <ColorPicker
             selectedColor={selectedColor}
-            onColorChange={setSelectedColor}
+            onColorChange={handleColorChange}
             theme={theme}
           />
 
@@ -161,7 +168,6 @@ const App: React.FC = () => {
           />
         </ScrollView>
 
-        {/* Sticky кнопка сохранения */}
         <View style={styles.stickyButtonContainer}>
           <GenerateButton
             selectedColor={selectedColor}
@@ -171,6 +177,7 @@ const App: React.FC = () => {
           />
         </View>
       </SafeAreaView>
+      <ToastConfig />
     </SafeAreaProvider>
   );
 };

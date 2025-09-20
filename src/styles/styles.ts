@@ -148,4 +148,46 @@ export const styles = StyleSheet.create({
     overflow: 'hidden',
     padding: 16,
   },
+  toastContainer: {
+    backgroundColor: 'rgba(28, 28, 30, 0.95)',
+    height: 120,
+    margin: 16,
+    borderRadius: 12,
+    padding: 16,
+    borderWidth: 1,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  toastTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  toastText: {
+    color: 'white',
+    fontSize: 14,
+    lineHeight: 18,
+    flex: 1,
+  },
+  toastSuccessBorder: {
+    borderColor: 'rgba(76, 175, 80, 0.3)',
+  },
+  toastErrorBorder: {
+    borderColor: 'rgba(244, 67, 54, 0.3)',
+  },
+  toastInfoBorder: {
+    borderColor: 'rgba(33, 150, 243, 0.3)',
+  },
+  toastSuccessTitle: {
+    color: '#4CAF50',
+  },
+  toastErrorTitle: {
+    color: '#F44336',
+  },
+  toastInfoTitle: {
+    color: '#2196F3',
+  },
 });

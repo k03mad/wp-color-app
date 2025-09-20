@@ -1,6 +1,6 @@
 import type React from 'react';
-import { Alert } from 'react-native';
 import RNFS from 'react-native-fs';
+import Toast from 'react-native-toast-message';
 import type ViewShot from 'react-native-view-shot';
 
 export const generateWallpaper = async (
@@ -29,17 +29,19 @@ export const generateWallpaper = async (
 
     await RNFS.copyFile(uri, destPath);
 
-    Alert.alert('Успешно!', `Обои сохранены в галерею!\nПуть: ${destPath}`, [
-      { text: 'OK' },
-    ]);
+    Toast.show({
+      type: 'success',
+      text1: '🎉 Готово!',
+      text2: `Обои сохранены в галерею:\n📁 Pictures/WPColorApp/\n📄 ${fileName}`,
+      visibilityTime: 5000,
+    });
   } catch (error) {
     console.error('Ошибка при сохранении:', error);
-    Alert.alert(
-      'Ошибка',
-      `Не удалось сохранить обои: ${
-        error instanceof Error ? error.message : 'Неизвестная ошибка'
-      }`,
-      [{ text: 'OK' }],
-    );
+    Toast.show({
+      type: 'error',
+      text1: '😔 Упс!',
+      text2: 'Не удалось сохранить обои. Попробуйте еще раз.',
+      visibilityTime: 4000,
+    });
   }
 };

@@ -1,4 +1,5 @@
-import { Alert, PermissionsAndroid, Platform } from 'react-native';
+import { PermissionsAndroid, Platform } from 'react-native';
+import Toast from 'react-native-toast-message';
 
 export const requestStoragePermission = async (): Promise<boolean> => {
   if (Platform.OS === 'android') {
@@ -23,19 +24,23 @@ export const requestStoragePermission = async (): Promise<boolean> => {
       });
 
       if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-        Alert.alert(
-          'Разрешение отклонено',
-          'Для сохранения обоев необходимо разрешение на запись файлов',
-        );
+        Toast.show({
+          type: 'info',
+          text1: '🔒 Нужно разрешение',
+          text2: 'Разрешите доступ к галерее для сохранения обоев',
+          visibilityTime: 4000,
+        });
         return false;
       }
       return true;
     } catch (err) {
       console.warn('Permission request error:', err);
-      Alert.alert(
-        'Ошибка разрешения',
-        'Не удалось запросить разрешение на сохранение файлов',
-      );
+      Toast.show({
+        type: 'error',
+        text1: '😕 Что-то пошло не так',
+        text2: 'Не удалось запросить разрешение',
+        visibilityTime: 4000,
+      });
       return false;
     }
   }
