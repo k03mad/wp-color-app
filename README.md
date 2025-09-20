@@ -1,5 +1,1 @@
-```
-npm i
-npm run android
-npm run build
-```
+# Android APP to save color as wallpaper

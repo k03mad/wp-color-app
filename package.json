@@ -1,17 +1,18 @@
 {
   "name": "wp-color-app",
   "version": "0.1.0",
+  "description": "Android APP to save color as wallpaper",
+  "maintainers": [
+    "Kirill Molchanov <k03.mad@gmail.com"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/k03mad/wp-color-app.git"
+  },
+  "license": "MIT",
   "private": true,
   "engines": {
     "node": ">=22"
-  },
-  "scripts": {
-    "android": "react-native run-android",
-    "build": "npm run build:arm64 && npm run build:copy",
-    "build:arm64": "cd android && ./gradlew assembleRelease -PreactNativeArchitectures=arm64-v8a && cd ..",
-    "build:copy": "cp android/app/build/outputs/apk/release/app-release.apk ~/Yandex/Download/wp-arm64-v8a-$(date +%Y%m%d_%H%M%S).apk",
-    "lint": "biome check && tsc",
-    "prepare": "husky"
   },
   "dependencies": {
     "@react-native-clipboard/clipboard": "1.16.3",
@@ -38,5 +39,16 @@
     "@types/react": "19.1.0",
     "husky": "9.1.7",
     "typescript": "5.9.2"
+  },
+  "scripts": {
+    "clean": "rm -rf ./node_modules || true",
+    "setup": "npm run clean && npm run setup:pnpm",
+    "setup:pnpm": "npm i pnpm -g && pnpm i",
+    "start": "react-native run-android",
+    "build": "npm run build:arm64 && npm run build:copy",
+    "build:arm64": "cd android && ./gradlew assembleRelease -PreactNativeArchitectures=arm64-v8a && cd ..",
+    "build:copy": "cp android/app/build/outputs/apk/release/app-release.apk ~/Yandex/Download/wp-arm64-v8a-$(date +%Y%m%d_%H%M%S).apk",
+    "lint": "biome check && tsc",
+    "prepare": "husky"
   }
 }
