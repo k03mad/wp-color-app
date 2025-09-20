@@ -77,7 +77,6 @@ const App: React.FC = () => {
             style={styles.wallpaperPreview}
           >
             <View style={styles.wallpaperPreview}>
-              {/* Основной цвет */}
               <View
                 style={[
                   styles.wallpaperPreview,
@@ -85,7 +84,6 @@ const App: React.FC = () => {
                 ]}
               />
 
-              {/* Градиентный оверлей для глубины */}
               <View
                 style={[
                   styles.gradientOverlay,
@@ -95,7 +93,6 @@ const App: React.FC = () => {
                 ]}
               />
 
-              {/* Текстовый оверлей с информацией о цвете */}
               <View style={styles.previewTextOverlay}>
                 <Text
                   style={[

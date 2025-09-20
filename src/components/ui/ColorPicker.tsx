@@ -3,6 +3,7 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import ColorPicker from 'react-native-wheel-color-picker';
 import type { Theme } from '../../constants/theme';
 import { styles } from '../../styles/styles';
+import { getContrastColor } from '../../utils/color';
 
 interface ColorPickerProps {
   selectedColor: string;
@@ -25,13 +26,17 @@ const ColorPickerComponent: React.FC<ColorPickerProps> = ({
         style={[
           styles.colorPickerButton,
           {
-            backgroundColor: theme.cardBackground,
-            borderColor: theme.border,
+            backgroundColor: selectedColor,
           },
         ]}
         onPress={onTogglePicker}
       >
-        <Text style={styles.colorPickerButtonText}>
+        <Text
+          style={[
+            styles.colorPickerButtonText,
+            { color: getContrastColor(selectedColor) },
+          ]}
+        >
           {showColorPicker ? 'Скрыть' : 'Палитра'}
         </Text>
       </TouchableOpacity>
