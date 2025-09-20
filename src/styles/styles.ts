@@ -72,7 +72,6 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 12,
     elevation: 12,
-    backdropFilter: 'blur(10px)',
   },
   section: {
     marginBottom: 24,
@@ -84,10 +83,6 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     marginBottom: 4,
     fontFamily: 'monospace',
-  },
-  colorPickerButtonText: {
-    fontSize: 16,
-    fontWeight: 'bold',
   },
   generateButton: {
     borderRadius: 12,
@@ -142,24 +137,13 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
   },
-  colorPickerButton: {
-    borderRadius: 8,
-    marginBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.15)',
-  },
   colorPicker: {
     height: 300,
     width: '100%',
   },
   colorPickerContainer: {
     position: 'relative',
-    marginBottom: 20,
+    marginBottom: 24,
     borderRadius: 8,
     overflow: 'hidden',
     padding: 16,

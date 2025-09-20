@@ -28,7 +28,6 @@ const App: React.FC = () => {
   const [selectedColor, setSelectedColor] = useState(PRESET_COLORS[0]);
   const [selectedGradient, setSelectedGradient] =
     useState<GradientPreset | null>(null);
-  const [showColorPicker, setShowColorPicker] = useState(false);
   const [isGradientMode, setIsGradientMode] = useState(false);
   const viewShotRef = useRef<ViewShot>(null);
 
@@ -79,14 +78,12 @@ const App: React.FC = () => {
     setSelectedColor(color);
     setSelectedGradient(null);
     setIsGradientMode(false);
-    setShowColorPicker(false);
   };
 
   const selectGradient = (gradient: GradientPreset) => {
     setSelectedGradient(gradient);
     setSelectedColor(gradient.colors[0]);
     setIsGradientMode(true);
-    setShowColorPicker(false);
   };
 
   const handleCopyHex = () => {
@@ -133,17 +130,11 @@ const App: React.FC = () => {
             isGradientMode={isGradientMode}
           />
 
-          <View style={styles.section}>
-            <ColorPicker
-              selectedColor={selectedColor}
-              onColorChange={setSelectedColor}
-              showColorPicker={showColorPicker}
-              onTogglePicker={() => setShowColorPicker(!showColorPicker)}
-              theme={theme}
-              selectedGradient={selectedGradient}
-              isGradientMode={isGradientMode}
-            />
-          </View>
+          <ColorPicker
+            selectedColor={selectedColor}
+            onColorChange={setSelectedColor}
+            theme={theme}
+          />
 
           <PresetColors
             colors={PRESET_COLORS}
