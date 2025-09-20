@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "build": "cd android && ./gradlew assembleRelease && cd .. && cp android/app/build/outputs/apk/release/app-release.apk .",
+    "build": "npm run build:arm64 && npm run build:copy",
+    "build:copy": "cp android/app/build/outputs/apk/release/app-release.apk ~/Yandex/Download/wp-$(date +%Y%m%d_%H%M%S).apk",
+    "build:arm64": "cd android && ./gradlew assembleRelease -PreactNativeArchitectures=arm64-v8a && cd ..",
     "lint": "biome check",
     "prepare": "husky"
   },
