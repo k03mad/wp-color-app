@@ -1,0 +1,9 @@
+.DS_Store
+
+android/.gradle/
+android/.kotlin/
+android/app/.cxx/
+android/app/build/
+android/build/
+
+node_modules/
